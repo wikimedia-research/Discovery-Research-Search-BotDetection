@@ -1,0 +1,55 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+    includes:
+      in_header: header.md
+    toc: true
+    toc_depth: 4
+---
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+options(digits = 4)
+library(magrittr)
+```
+
+# Repository Structure
+
+```{r dirs_setup}
+library(data.tree) # install.packages("data.tree")
+dir_node <- yaml::yaml.load_file("repo_structure.yaml") %>% as.Node
+```
+
+```{r dirs_create}
+dir_df <- ToDataFrameTable(dir_node, "pathString", "type")
+dir_df$pathString <- sub("Repository Structure/", "", dir_df$pathString, fixed = TRUE)
+invisible(sapply(dir_df$pathString[dir_df$type == "directory"], function(path) {
+  if (!dir.exists(path)) {
+    dir.create(path, recursive = TRUE)
+  }
+}))
+```
+
+```{r dirs_document, results = 'asis'}
+dir_df <- ToDataFrameTree(dir_node, "pathString", "type", "description")
+output <- paste0(
+  gsub(
+    "- ", "- [", # Complete links
+    paste0( # Make partial links
+      gsub(" --", "- ", # Markdown list item formatting
+           gsub("¦", " ", # Fix markdown list item spacing
+                gsub("°", "", # BEGIN: Remove node symbols
+                     paste0(
+                       stringi::stri_trim_right(dir_df$levelName),
+                       ifelse(dir_df$type == "directory", "/", "")
+                     ),
+                     fixed = TRUE), # END: Remove node symbols
+                fixed = TRUE), # END: Fix markdown list item spacing
+           fixed = TRUE), # END: Markdown list item formatting
+      "](", sub("Repository Structure/", "", dir_df$pathString, fixed = TRUE), ")"
+      ), # END: Make partial links
+    fixed = TRUE), # END: Complete links
+  " : ", dir_df$description
+)
+cat(paste0(output[-1], collapse = "\n"))
+```

@@ -1,0 +1,31 @@
+name: Repository Structure
+README.Rmd:
+  description: generates README.md
+  type: file
+repo_structure.yaml:
+  description: describes the structure of files and folders in this repository
+  type: file
+data:
+  description: all data-related files and folders
+  type: directory
+  scripts:
+    description: scripts that build JARs, run queries, and process raw data
+    type: directory
+  udfs:
+    description: project-specific user-defined functions (UDFs) for using in Hive
+    type: directory
+    source:
+      description: Java class files
+      type: directory
+    jars:
+      description: built JARs
+      type: directory
+  queries:
+    description: HiveQL and SQL queries for extracting search logs and event logging data
+    type: directory
+  raw:
+    description: for extracted data
+    type: directory
+  processed:
+    description: for extracted data from raw/ that's been processed
+    type: directory
