@@ -53,3 +53,11 @@ output <- paste0(
 )
 cat(paste0(output[-1], collapse = "\n"))
 ```
+
+# Data
+
+The searches are sampled on a per-user basis. That is, first we sample 1% of unique user agent (UA) and IP address pairs. Then we get all the search requests made by those users, instead of sampling 1% of the search requests. This way, we can use the sample to determine things like: number of searches performed per hour or day, median time between consecutive searches, and variance of query features.
+
+# License
+
+This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.

@@ -1,9 +1,6 @@
 name: Repository Structure
 README.Rmd:
-  description: generates README.md
-  type: file
-repo_structure.yaml:
-  description: describes the structure of files and folders in this repository
+  description: generates this README.md, depends on [repo_structure.yaml](repo_structure.yaml)
   type: file
 data:
   description: all data-related files and folders
@@ -11,6 +8,9 @@ data:
   scripts:
     description: scripts that build JARs, run queries, and process raw data
     type: directory
+    get_searches.R:
+      description: runs [data/queries/search_queries.hql](data/queries/search_queries.hql) in Hive
+      type: file
   udfs:
     description: project-specific user-defined functions (UDFs) for using in Hive
     type: directory
@@ -23,9 +23,15 @@ data:
   queries:
     description: HiveQL and SQL queries for extracting search logs and event logging data
     type: directory
+    search_queries.hql:
+      description: extracts UA info, deconstructs queries into features, etc. from sampled Cirrus search requests
+      type: file
   raw:
     description: for extracted data
     type: directory
   processed:
     description: for extracted data from raw/ that's been processed
     type: directory
+repo_structure.yaml:
+  description: describes the structure of files and folders in this repository
+  type: file
